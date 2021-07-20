@@ -1,5 +1,6 @@
 module NineNine where
 
+import Control.Monad ( liftM2 )
 
 -- *** PROBLEM 1: Find the last element of a list.***
 
@@ -36,7 +37,7 @@ myButLast' (x : xs) = myButLast' xs
 elementAt :: [a] -> Int -> a
 elementAt []       n = error "Insufficient elements in the list"
 elementAt (x : xs) 1 = x
-elementAt (x : xs) n 
+elementAt (x : xs) n
     | n<1            = error "Position cannot be less than 1"
     | otherwise      = elementAt xs (n-1)
 
@@ -51,3 +52,30 @@ myLength (x : xs) = 1 + myLength xs
 myLength' :: [a] -> Int
 myLength' = foldr (\x r-> 1 + r) 0
 
+-- *** PROBLEM 5: Reverse a list.***
+
+-- Without accumulator
+myReverse :: [a] -> [a]
+myReverse []     = []
+myReverse (x:xs) = reverse xs ++ [x]
+
+-- With accumulator
+myReverse' :: [a] -> [a]
+myReverse' = myReverseAux []
+
+myReverseAux :: [a] -> [a] -> [a]
+myReverseAux acc []       = acc
+myReverseAux acc (x : xs) = myReverseAux (x : acc) xs
+
+-- Using foldr
+myReverse'' :: [a] -> [a]
+myReverse'' = foldr (\x acc -> acc ++ [x]) []
+
+-- using foldl
+myReverse''' :: [a] -> [a]
+myReverse''' = foldl (flip (:)) []
+
+-- *** PROBLEM 6: Find out whether a list is a palindrome. A palindrome can be read forward or backward; e.g. (x a m a x).***
+
+isPalindrome :: Eq a => [a] -> Bool
+isPalindrome x = x == myReverse x
