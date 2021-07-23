@@ -3,6 +3,6 @@
 -> Below solutions are my (beginner's) solution to these problems. - https://github.com/prabhat-g97 \
 -> Feel free to fork this repository. \
 -> Please note that I won't be merging any Pull requests. However, corrections are welcomed. \
--> I will be adding better solutions as I learn more. Happy Coding! \
+-> I will be adding better solutions as I learn more. Happy Coding!
 
--> To test these solutions yourself, just load the NineNine.hs file in ghci or your own module and test away! \
+-> To test these solutions yourself, just load the NineNine.hs file in ghci or your own module and test away!
