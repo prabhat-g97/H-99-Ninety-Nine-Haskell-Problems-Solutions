@@ -1,7 +1,15 @@
+-- All below problems and their solutions can be found at https://wiki.haskell.org/H-99:_Ninety-Nine_Haskell_Problems.
+-- Below solutions are my (beginner's) solution to these problems. - https://github.com/prabhat-g97
+-- Feel free to fork this repository.
+-- Please note that I won't be merging any Pull requests. However, corrections are welcomed.
+-- I will be adding better solutions as I learn more. Happy Coding!
+
 module NineNine where
 
 import Control.Monad ( liftM2 )
 import Data.List (foldl')
+
+-------------------------------------------------------------------------------- Problems 1 - 10
 
 -- *** PROBLEM 1: Find the last element of a list.***
 
@@ -114,3 +122,19 @@ pack (x1 : x2 : xs) =
 
 encode :: Eq a => [a] -> [(Int,a)]
 encode = map (\ (s : str) -> (myLength (s : str), s)) . pack
+
+-------------------------------------------------------------------------------- Problems 11 - 20
+
+-- *** PROBLEM 11: Modified run-length encoding.***
+data Encoded a = Multiple Int a | Single a
+    deriving Show
+
+encodeModified ::Eq a => [a] -> [Encoded a]
+encodeModified = map (\ (s : str) -> 
+    let
+        l = length (s : str)
+    in
+        if l>1
+            then Multiple l s
+            else Single s
+    ) . pack
