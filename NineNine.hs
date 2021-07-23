@@ -1,6 +1,7 @@
 module NineNine where
 
 import Control.Monad ( liftM2 )
+import Data.List (foldl')
 
 -- *** PROBLEM 1: Find the last element of a list.***
 
@@ -71,11 +72,45 @@ myReverseAux acc (x : xs) = myReverseAux (x : acc) xs
 myReverse'' :: [a] -> [a]
 myReverse'' = foldr (\x acc -> acc ++ [x]) []
 
--- using foldl
+-- using foldl'
 myReverse''' :: [a] -> [a]
-myReverse''' = foldl (flip (:)) []
+myReverse''' = foldl' (flip (:)) []
 
 -- *** PROBLEM 6: Find out whether a list is a palindrome. A palindrome can be read forward or backward; e.g. (x a m a x).***
+isPalindrome' :: Eq a => [a] -> Bool
+isPalindrome' x = (==) x (myReverse x)
 
-isPalindrome :: Eq a => [a] -> Bool
-isPalindrome x = x == myReverse x
+-- *** PROBLEM 7: Flatten a nested list structure.***
+data NestedList a = Elem a | List [NestedList a]
+-- Above definition of NestedList can be found in Problem 7 decription here https://wiki.haskell.org/99_questions/1_to_10.
+
+myFlatten :: NestedList a -> [a]
+myFlatten (Elem a)        = [a]
+myFlatten (List [])       = []
+myFlatten (List (x : xs)) = myFlatten x ++ myFlatten (List xs)
+
+-- *** PROBLEM 8: Eliminate consecutive duplicates of list elements.***
+compress :: Eq a => [a] -> [a]
+compress []             = []
+compress [x]            = [x]
+compress (x1 : x2 : xs) = if x1 == x2
+    then      compress (x2 : xs)
+    else x1 : compress (x2 : xs)
+
+-- *** PROBLEM 9: Pack consecutive duplicates of list elements into sublists. If a list contains repeated elements they should be placed in separate sublists.***
+pack :: Eq a => [a] -> [[a]]
+pack [] = []
+pack [x] = [[x]]
+pack (x1 : x2 : xs) =
+    let
+        (r : rs) = pack (x2 : xs)
+    in
+        if x1 == x2
+            then (x1:r) : rs
+            else [x1]   : (r : rs)
+
+-- *** PROBLEM 10: Run-length encoding of a list. Use the result of problem P09 to implement the so-called run-length encoding data compression method.
+--                 Consecutive duplicates of elements are encoded as lists (N E) where N is the number of duplicates of the element E.***
+
+encode :: Eq a => [a] -> [(Int,a)]
+encode = map (\ (s : str) -> (myLength (s : str), s)) . pack
